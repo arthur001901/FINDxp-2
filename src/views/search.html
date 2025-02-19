@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Pesquisa de Magnet Links</title>
+  <link rel="stylesheet" href="../public/css/style.css">
+</head>
+<body>
+  <h1>Pesquisa de Jogos</h1>
+
+  <!-- Entrada para o título a pesquisar -->
+  <input type="text" id="titleInput" placeholder="Digite o título do jogo...">
+
+  <!-- Botão para exibir/ocultar filtros -->
+  <button id="filterButton">
+    Filtros <i class="fa fa-chevron-down"></i>
+  </button>
+
+  <!-- Container para os filtros (checkboxes serão inseridos aqui) -->
+  <div id="filterOptions" class="hidden"></div>
+
+  <!-- Container onde os resultados serão exibidos -->
+  <div id="resultContainer"></div>
+  <p>Resultados encontrados: <span id="results-count">0</span></p>
+
+  <!-- Elemento de notificação de cópia (opcional) -->
+  <div id="copyNotification">Link copiado!</div>
+
+  <script src="../public/js/search.js"></script>
+</body>
+</html>

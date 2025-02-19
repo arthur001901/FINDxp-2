@@ -1,0 +1,24 @@
+{
+  "name": "findxp-2",
+  "version": "1.0.0",
+  "description": "eu não sei oq eu to fazendo",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arthur001901/FINDxp-2.git"
+  },
+  "author": "Arthur",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arthur001901/FINDxp-2/issues"
+  },
+  "homepage": "https://github.com/arthur001901/FINDxp-2#readme",
+  "devDependencies": {
+    "electron": "^34.2.0",
+    "electron-reload": "^2.0.0-alpha.1"
+  }
+}

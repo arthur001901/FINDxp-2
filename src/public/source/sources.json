@@ -1,0 +1,28 @@
+{
+    "sources": [
+      {
+        "name": "DODI",
+        "url": "https://hydralinks.cloud/sources/dodi.json"
+      },
+      {
+        "name": "FITGIRL",
+        "url": "https://hydralinks.cloud/sources/fitgirl.json"
+      },
+      {
+        "name": "EMPRESS",
+        "url": "https://hydralinks.cloud/sources/empress.json"
+      },
+      {
+        "name": "ONLINE-FIX",
+        "url": "https://hydralinks.cloud/sources/onlinefix.json"
+      },
+      {
+        "name": "XATAB",
+        "url": "https://hydralinks.cloud/sources/xatab.json"
+      },
+      {
+        "name": "ruTRACKER",
+        "url": "https://raw.githubusercontent.com/KekitU/rutracker-hydra-links/main/all_categories.json"
+      }
+    ]
+  }  
