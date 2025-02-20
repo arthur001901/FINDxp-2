@@ -206,14 +206,17 @@ function displayResults(results, limit = 33) {
     resultContainer.appendChild(resultCard);
   });
 
-  // Mostrar ou esconder o botão "Mostrar mais"
+  ///////////////////////////////////"Mostrar mais" e "Mostrar todos"
   const showMoreButton = document.getElementById('showMoreButton');
+  const showAllButton = document.getElementById('showAllButton');
   if (results.length > limit) {
     setTimeout(() => {
     showMoreButton.style.display = 'block';
+    showAllButton.style.display = 'block';
     }, 1);
   } else {
     showMoreButton.style.display = 'none';
+    showAllButton.style.display = 'none';
   }
 }
 
@@ -238,12 +241,63 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+document.getElementById('showAllButton').addEventListener('click', () => {
+  const aviso = document.createElement('div');
+  aviso.classList.add('aviso');
+  aviso.innerHTML = `
+    <div class="bg-aviso">
+      <div class="timer1">
+        <h1 id="timer">5</h1>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(aviso);
+
+  let countdown = 5; // Valor inicial
+  const timerElement = document.getElementById('timer');
+
+  // Atualiza o número imediatamente
+  timerElement.textContent = countdown;
+
+  // Inicia o timer
+  const timer = setInterval(() => {
+    countdown--; // Decrementa o valor
+    if (countdown >= 0) {
+      timerElement.textContent = countdown; // Atualiza o número na tela
+    } else {
+      clearInterval(timer); // Para o timer quando chega a 0
+      document.body.removeChild(aviso); // Remove o aviso
+    }
+  }, 1000); // Executa a cada 1000ms (1 segundo)
+});
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Atualiza as checkboxes com base nos filtros da URL
+  updateFilterCheckboxes();
+
+  // Oculta os botões "Mostrar mais" e "Mostrar todos" ao carregar a página
+  document.getElementById('showMoreButton').style.display = 'none';
+  document.getElementById('showAllButton').style.display = 'none';
+
+  // Realiza a pesquisa com o termo que está na URL, caso exista
+  const urlParams = new URLSearchParams(window.location.search);
+  const query = urlParams.get('query');
+  if (initialQuery) {
+    titleInput.value = decodeURIComponent(initialQuery);
+    performSearch(query);
+  }
+});
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+// Função para abrir o link magnet
 function openMagnetLink(magnetLink) {
   window.location.href = magnetLink;
 }
-
+// Função para copiar o link magnet
 function copyToClipboard(text) {
-  // Copia o texto para a área de transferência
   const textarea = document.createElement('textarea');
   
   textarea.value = text;
@@ -257,17 +311,17 @@ function copyToClipboard(text) {
   notification.classList.add('copy-notification');
   notification.textContent = 'Link copiado!';
 
-  // Adiciona a notificação ao container
+  // Adiciona a notificação no container
   const container = document.getElementById('notificationContainer');
   container.appendChild(notification);
 
-  // Força reflow para garantir que a transição funcione
+  // Força reflow para que a transição funcione
   void notification.offsetWidth;
 
-  // Exibe a notificação
+  // mostra a notificação
   notification.classList.add('show');
 
-  // Remove a notificação após 2 segundos (pode ajustar o tempo)
+  // Remove a notificação dps de 2 segundos
   setTimeout(() => {
     notification.classList.remove('show');
     // Após a transição de saída (0.5s), remove o elemento do DOM
@@ -279,9 +333,7 @@ function copyToClipboard(text) {
   }, 2000);
 }
 
- /////////////////////////////////////////////////////////mostrar filterOptions//////////////////////////////////////////////////////////////
-
- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Função para marcar ou desmarcar todas as checkboxes
 function marcarTodas() {
   // Marca todas as checkboxes
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -294,7 +346,6 @@ function marcarTodas() {
   selectedFilters = Array.from(checkboxes).map(checkbox => checkbox.value);
 
 }
-
 function desmarcarTodas() {
   // Desmarca todas as checkboxes
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -306,7 +357,7 @@ function desmarcarTodas() {
   // Limpa o selectedFilters
   selectedFilters = [];
 }
-
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 // Carregar os filtros da URL (caso existam)
 function getFiltersFromUrl() {
