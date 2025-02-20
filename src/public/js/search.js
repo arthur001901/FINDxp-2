@@ -92,6 +92,7 @@ document.addEventListener('click', (event) => {
 titleInput.addEventListener('keydown', (event) => {
   if (event.key === 'Enter') {
     performSearch(titleInput.value.trim());
+    showMoreButton.style.display = 'none';
   }
 });
 
@@ -100,6 +101,7 @@ titleInput.addEventListener('keydown', (event) => {
 function performSearch(searchQuery) {
   resultContainer.innerHTML = ""; // Limpa os resultados anteriores
   resultsCount.textContent = "0";
+  document.getElementById('showMoreButton').style.display = 'none';
 
   // Verifica se a pesquisa está vazia
   if (!searchQuery) {
@@ -133,12 +135,10 @@ function searchGames(query) {
   resultsCount.textContent = "0";
   let allResults = [];
 
-  // Filtra as fontes com base nos filtros selecionados
   const sourcesToUse = sourcesList.filter(source =>
     selectedFilters.includes(source.name.toLowerCase())
   );
 
-  // Se nenhum filtro estiver selecionado, usa todas as fontes
   const sourcesAtivas = sourcesToUse.length > 0 ? sourcesToUse : sourcesList;
   let sourcesLoaded = 0;
 
@@ -146,23 +146,20 @@ function searchGames(query) {
     fetch(source.url)
       .then(response => response.json())
       .then(data => {
-        // Cada fonte
         const results = data.downloads.filter(game =>
           game.title.toLowerCase().includes(query.toLowerCase())
         );
 
-        // Adiciona o nome da fonte aos resultados para exibição
         results.forEach(game => game.repoName = source.name);
         allResults = allResults.concat(results);
         sourcesLoaded++;
 
-        // Quando todas as fontes tiverem sido processadas, exibe os resultados
         if (sourcesLoaded === sourcesAtivas.length) {
           if (allResults.length === 0) {
             resultContainer.innerHTML = "<p>Nenhum resultado encontrado.</p>";
             resultsCount.textContent = "0";
           } else {
-            displayResults(sortResultsByDate(allResults));
+            displayResults(sortResultsByDate(allResults), 33); // Pass the limit here
           }
         }
       })
@@ -174,13 +171,19 @@ function sortResultsByDate(results) {
   return results.sort((a, b) => new Date(b.uploadDate).getTime() - new Date(a.uploadDate).getTime()); // Comparação direta usando timestamps
 }
 
+let currentResults = [];
+let currentLimit = 33;
 
 // 6. Função para exibir os resultados (cada resultado em um parágrafo ou card)
-function displayResults(results) {
+function displayResults(results, limit = 33) {
+  currentResults = results;
+  currentLimit = limit;
   resultContainer.innerHTML = "";
   resultsCount.textContent = results.length;
 
-  results.forEach(result => {
+  const limitedResults = results.slice(0, limit);
+
+  limitedResults.forEach(result => {
     const resultCard = document.createElement('div');
     resultCard.classList.add('resultCard');
     resultCard.innerHTML = `
@@ -202,7 +205,38 @@ function displayResults(results) {
       `;
     resultContainer.appendChild(resultCard);
   });
+
+  // Mostrar ou esconder o botão "Mostrar mais"
+  const showMoreButton = document.getElementById('showMoreButton');
+  if (results.length > limit) {
+    setTimeout(() => {
+    showMoreButton.style.display = 'block';
+    }, 1);
+  } else {
+    showMoreButton.style.display = 'none';
+  }
 }
+
+document.getElementById('showMoreButton').addEventListener('click', () => {
+  currentLimit += 33; // Incrementa o limite
+  displayResults(currentResults, currentLimit); // Exibe mais resultados
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Atualiza as checkboxes com base nos filtros da URL
+  updateFilterCheckboxes();
+
+  // Oculta o botão "Mostrar mais" ao carregar a página
+  document.getElementById('showMoreButton').style.display = 'none';
+
+  // Realiza a pesquisa com o termo que está na URL, caso exista
+  const urlParams = new URLSearchParams(window.location.search);
+  const query = urlParams.get('query');
+  if (initialQuery) {
+    titleInput.value = decodeURIComponent(initialQuery);
+    performSearch(query);
+  }
+});
 
 function openMagnetLink(magnetLink) {
   window.location.href = magnetLink;
