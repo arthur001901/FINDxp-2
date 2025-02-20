@@ -550,7 +550,7 @@ input[type="checkbox"]:checked:hover{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #000000fd;
+    background-color: #000000b7;
     width: 100vw;
     height: 100vh;
     color: #fff;
@@ -562,17 +562,48 @@ input[type="checkbox"]:checked:hover{
     justify-content: center;
   }
 
-  .bg-aviso {
-    position: fixed;
+.bg-aviso {
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #868686; 
+    position: flex;
+    justify-content: space-between;
+    align-items: center;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8); /* Fundo semitransparente */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 69vmin;
+    height: 38vmin;
+    background-color:#0e0f12c0;
     z-index: 1000;
+    backdrop-filter: blur(5px);
+  }
+  
+  .aviso-content {
+    display: flex;;
+  }
+
+  .aviso-text {
+    background-color: #01a857;
+    width: 50%;
+  }
+
+  .timer-container {
+    position: relative;
+    width: 20vw;
+    height: 20vh;
+  }
+
+  .aviso-content h1 {
+    font-size: 5vmin;
+  }
+
+  .time-text {
+    position: absolute;
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    font-size: 3.5vmin; 
+    font-weight: bold;
   }
   
   .timer1 h1 {

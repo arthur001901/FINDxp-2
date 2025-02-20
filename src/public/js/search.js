@@ -175,7 +175,7 @@ let currentResults = [];
 let currentLimit = 33;
 
 // 6. Função para exibir os resultados (cada resultado em um parágrafo ou card)
-function displayResults(results, limit = 33) {
+function displayResults(results, limit = 21) {
   currentResults = results;
   currentLimit = limit;
   resultContainer.innerHTML = "";
@@ -242,34 +242,65 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.getElementById('showAllButton').addEventListener('click', () => {
+  // Cria o container do aviso com o timer circular responsivo
   const aviso = document.createElement('div');
   aviso.classList.add('aviso');
   aviso.innerHTML = `
     <div class="bg-aviso">
-      <div class="timer1">
-        <h1 id="timer">5</h1>
+      <div class="aviso-content"> 
+        <div class="timer-container" style="width: 15vmin; height: 15vmin;">
+          <svg viewBox="0 0 200 200" style="transform: rotate(-90deg); width: 100%; height: 100%;">
+            <!-- Círculo de fundo branco -->
+            <circle cx="100" cy="100" r="70" stroke="white" stroke-width="30" fill="none"/>
+            <!-- Círculo de progresso verde -->
+            <circle id="progressCircle" cx="100" cy="100" r="70" stroke="green" stroke-width="29" fill="none"
+              stroke-dasharray="439.82" stroke-dashoffset="439.82" />
+          </svg>
+          <!-- Texto central com o tempo restante -->
+          <div class="time-text" id="timeText">5</div>
+        </div>
+        <h1>ATENÇÃO</h1>
       </div>
     </div>
   `;
   document.body.appendChild(aviso);
 
-  let countdown = 5; // Valor inicial
-  const timerElement = document.getElementById('timer');
+  // Seleciona os elementos do SVG e do texto
+  const progressCircle = aviso.querySelector('#progressCircle');
+  const timeText = aviso.querySelector('#timeText');
 
-  // Atualiza o número imediatamente
-  timerElement.textContent = countdown;
+  const radius = 70; // Raio ajustado para o círculo menor
+  const circumference = 2 * Math.PI * radius; // Circunferência ajustada
 
-  // Inicia o timer
-  const timer = setInterval(() => {
-    countdown--; // Decrementa o valor
-    if (countdown >= 0) {
-      timerElement.textContent = countdown; // Atualiza o número na tela
-    } else {
-      clearInterval(timer); // Para o timer quando chega a 0
-      document.body.removeChild(aviso); // Remove o aviso
+  const totalTime = 500; // Tempo total em segundos
+  const startTime = Date.now();
+  let timerInterval = setInterval(() => {
+    const elapsed = (Date.now() - startTime) / 1000; // Tempo decorrido em segundos
+    let progress = elapsed / totalTime;
+    if (progress > 1) progress = 1; // Garante que o progresso não ultrapasse 100%
+
+    // Atualiza o deslocamento do círculo para representar o progresso
+    const offset = circumference * (1 - progress);
+    progressCircle.style.strokeDashoffset = offset;
+
+    // Atualiza o tempo exibido (arredondado para cima)
+    let timeLeft = Math.ceil(totalTime - elapsed);
+    if (timeLeft < 0) timeLeft = 0;
+    timeText.textContent = timeLeft;
+
+    // Quando o timer atinge 0 (100% do progresso)
+    if (progress === 1) {
+      progressCircle.style.strokeDashoffset = 0;
+      timeText.textContent = "0";
+      clearInterval(timerInterval);
+      // Remove o aviso da tela
+      document.body.removeChild(aviso);
     }
-  }, 1000); // Executa a cada 1000ms (1 segundo)
+  }, 1000 / 60); // Atualiza cerca de 60 vezes por segundo
 });
+
+
+
 
 
 
