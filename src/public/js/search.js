@@ -53,21 +53,9 @@ function buildFilterOptions() {
             selectedFilters = selectedFilters.filter(f => f !== filterValue);
         }
     });
+
+    // Executa a pesquisa apenas quando o botão de aplicar for clicado
     
-    // Evento do botão "Aplicar"
-    // Evite adicionar múltiplos eventos ao bot
-
-    // Função que será chamada quando o botão for clicado
-    function Aplicar() {
-        const searchQuery = titleInput.value.trim(); // Remove espaços extras
-        if (!searchQuery) {
-            alert("Digite algo antes de aplicar a pesquisa!"); // Mostra alerta se estiver vazio
-            return; // Sai sem executar a busca
-        }
-        performSearch(searchQuery); // Executa a busca com os filtros aplicados
-        console.log("a")
-    }
-
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -77,27 +65,36 @@ function buildFilterOptions() {
   });
 }
 
+function teste() {
+    const searchQuery = titleInput.value.trim(); // Remove espaços extras
+    if (!searchQuery) {
+        
+        console.log("input vazio"); // Mostra alerta se estiver vazio
+        return; // Sai sem executar a busca
+    }
+    performSearch(titleInput.value.trim()); // Executa a busca com os filtros aplicados
+};
+
 // Elemento começa invisível por padrão
 filterOptions.classList.remove('visible');
 
 // Toggle dos filtros ao clicar no botão
 filterButton.addEventListener('click', () => {
   const isVisible = filterOptions.classList.toggle('visible');
-//   const icon = filterButton.querySelector('i');
-  
-//   // Atualiza o ícone baseado no estado do dropdown
-//   icon.classList.toggle('fa-chevron-up', isVisible);
-//   icon.classList.toggle('fa-chevron-down', !isVisible);
 });
 
-
-
+document.addEventListener('click', (event) => {
+  if (!filterButton.contains(event.target) && !filterOptions.contains(event.target)) {
+    filterOptions.classList.remove('visible');
+  }
+});
 // 3. Inicia a busca ao pressionar a tecla Enter
 titleInput.addEventListener('keydown', (event) => {
   if (event.key === 'Enter') {
     performSearch(titleInput.value.trim());
   }
 });
+
 
 // Função que realiza a pesquisa
 function performSearch(searchQuery) {
@@ -107,7 +104,7 @@ function performSearch(searchQuery) {
   // Verifica se a pesquisa está vazia
   if (!searchQuery) {
     // Exibe a mensagem personalizada somente quando a pesquisa estiver vazia
-    resultContainer.innerHTML = "<p>8===D</p>";
+    console.log("Pesquisa vazia");
     return;
   }
 
@@ -127,6 +124,8 @@ function handleFilterChange() {
     performSearch(searchQuery);
   }
 }
+
+
 
 // 5. Função que realiza a pesquisa em cada fonte selecionada
 function searchGames(query) {
@@ -246,46 +245,20 @@ function copyToClipboard(text) {
   }, 2000);
 }
 
+ /////////////////////////////////////////////////////////mostrar filterOptions//////////////////////////////////////////////////////////////
 
-document.getElementById('filterButton').addEventListener('click', function () {
-  const session = document.getElementById('filterOptions');
-  
-  // Verifica se a sessão está visível ou oculta e alterna
-  if (session.style.visibility === 'hidden' || !session.style.visibility) {
-    session.style.visibility = 'visible'; // Exibe a sessão
-    session.style.display = 'flex';
-  } else {
-    session.style.visibility = 'hidden';  // Oculta a sessão
-  }
-});
-
-// Variável para controlar o estado do dropdown
-let isDropdownOpen = false;
-
-// Toggle do dropdown ao clicar no botão
-filterButton.addEventListener('click', (event) => {
-  event.stopPropagation(); // Impede o clique no botão de acionar o evento do document
-  isDropdownOpen = !isDropdownOpen;
-  filterOptions.style.visibility = isDropdownOpen ? 'visible' : 'hidden';
-
-  // Atualiza o ícone
-  const icon = filterButton.querySelector('i');
-  icon.classList.toggle('fa-chevron-up', isDropdownOpen);
-  icon.classList.toggle('fa-chevron-down', !isDropdownOpen);
-});
-
+ ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function marcarTodas() {
   // Marca todas as checkboxes
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
   checkboxes.forEach(checkbox => {
     checkbox.checked = true;
   });
+  console.log("marcadas");
 
   // Atualiza o selectedFilters para incluir todas as opções
   selectedFilters = Array.from(checkboxes).map(checkbox => checkbox.value);
 
-  // Executa a pesquisa com os filtros atualizados
-  performSearch(titleInput.value.trim());
 }
 
 function desmarcarTodas() {
@@ -294,13 +267,10 @@ function desmarcarTodas() {
   checkboxes.forEach(checkbox => {
     checkbox.checked = false;
   });
+  console.log("desmarcadas");
 
   // Limpa o selectedFilters
   selectedFilters = [];
-
-  // Executa a pesquisa com os filtros atualizados
-  performSearch(titleInput.value.trim());
-  console.log("desmarcados")
 }
 
 
@@ -341,7 +311,8 @@ function performSearch(searchQuery) {
 
   // Verifica se a pesquisa está vazia
   if (!searchQuery) {
-    resultContainer.innerHTML = "<p>8===D</p>";
+    resultContainer.innerHTML = "<p>Hello, World!</p>";
+    console.log("input vazio");
     return;
   }
 
