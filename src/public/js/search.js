@@ -7,6 +7,12 @@ const filterOptions = document.getElementById('filterOptions');
 const urlParams = new URLSearchParams(window.location.search);
 const applyButton = document.getElementById('applyButton');
 
+///// comandos bacanudos
+document.addEventListener("DOMContentLoaded", () => { 
+  console.log('Comandos disponíveis: showAll(), marcarTodas(), desmarcarTodas()');
+  performSearch(query);
+});
+window.showAll = () => document.getElementById('showAllButton')?.click();
 
 
 // Pega o valor da query de pesquisa e dos filtros
@@ -327,6 +333,7 @@ document.getElementById('showAllButton').addEventListener('click', () => {
       if (progress === 1) {
         progressCircle.style.strokeDashoffset = 0;
         progressCircle.style.fill = 'green';
+        progressCircle.style.transition = 'fill 0.1s ease-in';
         document.getElementById('progress').style.display = 'none';
       
         timeText.style.fontSize = '5.5vmin';
