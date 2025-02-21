@@ -8,6 +8,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const applyButton = document.getElementById('applyButton');
 
 
+
 // Pega o valor da query de pesquisa e dos filtros
 const initialQuery = urlParams.get('query');  // Pesquisa que o usuário fez
 const initialFilters = urlParams.get('filters');  // Filtros selecionados (como DODI, FITGIRL, etc.)
@@ -174,12 +175,18 @@ function sortResultsByDate(results) {
 let currentResults = [];
 let currentLimit = 33;
 
+
 // 6. Função para exibir os resultados (cada resultado em um parágrafo ou card)
 function displayResults(results, limit = 21) {
   currentResults = results;
   currentLimit = limit;
   resultContainer.innerHTML = "";
   resultsCount.textContent = results.length;
+  console.log(results.length);  
+  
+  
+  
+
 
   const limitedResults = results.slice(0, limit);
 
@@ -218,6 +225,11 @@ function displayResults(results, limit = 21) {
     showMoreButton.style.display = 'none';
     showAllButton.style.display = 'none';
   }
+
+  const updatedValorElement = document.getElementById('valor');
+  if (updatedValorElement) {
+    updatedValorElement.textContent = results.length;
+  }
 }
 
 document.getElementById('showMoreButton').addEventListener('click', () => {
@@ -243,60 +255,94 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.getElementById('showAllButton').addEventListener('click', () => {
   // Cria o container do aviso com o timer circular responsivo
-  const aviso = document.createElement('div');
-  aviso.classList.add('aviso');
-  aviso.innerHTML = `
-    <div class="bg-aviso">
-      <div class="aviso-content"> 
-        <div class="timer-container" style="width: 15vmin; height: 15vmin;">
-          <svg viewBox="0 0 200 200" style="transform: rotate(-90deg); width: 100%; height: 100%;">
-            <!-- Círculo de fundo branco -->
-            <circle cx="100" cy="100" r="70" stroke="white" stroke-width="30" fill="none"/>
-            <!-- Círculo de progresso verde -->
-            <circle id="progressCircle" cx="100" cy="100" r="70" stroke="green" stroke-width="29" fill="none"
-              stroke-dasharray="439.82" stroke-dashoffset="439.82" />
-          </svg>
-          <!-- Texto central com o tempo restante -->
-          <div class="time-text" id="timeText">5</div>
+  if (currentResults.length > 1000) {
+    const aviso = document.createElement('div');
+    aviso.classList.add('aviso');
+    aviso.innerHTML = `
+      <div class="bg-aviso">
+        <div class="aviso-content"> 
+          <div class="timer-container" style="width: 15vmin; height: 15vmin;">
+            <svg viewBox="0 0 200 200" style="transform: rotate(-90deg); width: 100%; height: 100%;">
+              <!-- Círculo de fundo branco -->
+              <circle id="progress" cx="100" cy="100" r="70" stroke="white" stroke-width="30" fill="none"/>
+              <!-- Círculo de progresso verde -->
+              <circle id="progressCircle" cx="100" cy="100" r="70" stroke="green" stroke-width="29" fill="none"
+                stroke-dasharray="439.82" stroke-dashoffset="439.82" />
+            </svg>
+            <!-- Texto central com o tempo restante -->
+            <div class="time-text" id="timeText">5</div>
+          </div>
+          <div class="aviso-text">
+            <h1>AÇÃO NÃO RECOMENDADA!</h1>
+          </div>
         </div>
-        <h1>ATENÇÃO</h1>
+
+        <div class="aviso-text-2">
+          <p>Carregar milhares de resultados simultaneamente
+           pode causar travamentos, queda de desempenho ou falhas no sistema.
+          </p>
+          <p>Deseja <b>realmente</b> continuar?</p>
+        </div>
+
+        <div class="aviso-buttons">
+          <button class="aviso-button" id="cancelButton">Cancelar</button>
+          <button class="aviso-button" class = "confirmButton" id="confirmButton">Continuar</button>
       </div>
-    </div>
-  `;
-  document.body.appendChild(aviso);
+    `;
+    document.body.appendChild(aviso);
 
-  // Seleciona os elementos do SVG e do texto
-  const progressCircle = aviso.querySelector('#progressCircle');
-  const timeText = aviso.querySelector('#timeText');
-
-  const radius = 70; // Raio ajustado para o círculo menor
-  const circumference = 2 * Math.PI * radius; // Circunferência ajustada
-
-  const totalTime = 500; // Tempo total em segundos
-  const startTime = Date.now();
-  let timerInterval = setInterval(() => {
-    const elapsed = (Date.now() - startTime) / 1000; // Tempo decorrido em segundos
-    let progress = elapsed / totalTime;
-    if (progress > 1) progress = 1; // Garante que o progresso não ultrapasse 100%
-
-    // Atualiza o deslocamento do círculo para representar o progresso
-    const offset = circumference * (1 - progress);
-    progressCircle.style.strokeDashoffset = offset;
-
-    // Atualiza o tempo exibido (arredondado para cima)
-    let timeLeft = Math.ceil(totalTime - elapsed);
-    if (timeLeft < 0) timeLeft = 0;
-    timeText.textContent = timeLeft;
-
-    // Quando o timer atinge 0 (100% do progresso)
-    if (progress === 1) {
-      progressCircle.style.strokeDashoffset = 0;
-      timeText.textContent = "0";
-      clearInterval(timerInterval);
-      // Remove o aviso da tela
+    document.getElementById('cancelButton').addEventListener('click', () => {
       document.body.removeChild(aviso);
-    }
-  }, 1000 / 60); // Atualiza cerca de 60 vezes por segundo
+    });
+
+    document.getElementById('confirmButton').addEventListener('click', () => {
+      displayResults(currentResults, currentResults.length);
+      document.body.removeChild(aviso);
+    }); 
+
+    // Seleciona os elementos do SVG e do texto
+    const progressCircle = aviso.querySelector('#progressCircle');
+    const timeText = aviso.querySelector('#timeText');
+
+    const radius = 70; // Raio ajustado para o círculo menor
+    const circumference = 2 * Math.PI * radius; // Circunferência ajustada
+
+    const totalTime = 5; // Tempo total em segundos
+    const startTime = Date.now();
+    let timerInterval = setInterval(() => {
+      const elapsed = (Date.now() - startTime) / 1000; // Tempo decorrido em segundos
+      let progress = elapsed / totalTime;
+      if (progress > 1) progress = 1; // Garante que o progresso não ultrapasse 100%
+
+      // Atualiza o deslocamento do círculo para representar o progresso
+      const offset = circumference * (1 - progress);
+      progressCircle.style.strokeDashoffset = offset;
+
+      // Atualiza o tempo exibido (arredondado para cima)
+      let timeLeft = Math.ceil(totalTime - elapsed);
+      if (timeLeft < 0) timeLeft = 0;
+      timeText.textContent = timeLeft;
+
+      // Quando o timer atinge 0 (100% do progresso)
+      if (progress === 1) {
+        progressCircle.style.strokeDashoffset = 0;
+        progressCircle.style.fill = 'green';
+        document.getElementById('progress').style.display = 'none';
+      
+        timeText.style.fontSize = '5.5vmin';
+        timeText.innerHTML = ' <i class="fa-solid fa-check"></i>';
+        clearInterval(timerInterval);
+        // ativa e desativo o botão
+        
+        document.getElementById('confirmButton').style.pointerEvents = 'auto';
+      } else {
+        document.getElementById('confirmButton').style.pointerEvents = 'none';
+      }
+
+    }, 1000 / 60); // Atualiza cerca de 60 vezes por segundo
+  } else {
+    displayResults(currentResults, currentResults.length);
+  }
 });
 
 
