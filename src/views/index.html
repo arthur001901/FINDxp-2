@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 
@@ -35,18 +35,21 @@
   </div>
 </header>
 
-<div class="results"> 
-<p>Resultados: <span id="results-count">0</span></p>
+<div class="resultCountContainer"> 
+  <div class="results"> 
+    <p>Resultados: <span id="results-count">0</span></p>
+  </div>
 </div>
-
 
 <div class="results-wrapper"> 
   <div id="resultContainer"></div>
 </div>
 
-<div class="showMore" style="width: 100%; display: flex; justify-content: space-between; padding-bottom: 20px;"> 
-  <button id="showMoreButton" style="display: none;">Mostrar mais</button>
-  <buttton id="showAllButton" style="display: none;">Mostrar tudo</button>
+
+<div id="loading" style="display:none">
+  <div id="loadingSpinner" style="display: flex;">
+    <span class="loader"></span>
+  </div>
 </div>
 
 <div id="notificationContainer"> 

@@ -5,28 +5,19 @@ const resultsCount = document.getElementById('results-count');
 const filterButton = document.getElementById('filterButton');
 const filterOptions = document.getElementById('filterOptions');
 const urlParams = new URLSearchParams(window.location.search);
-const applyButton = document.getElementById('applyButton');
-
-///// comandos bacanudos
-document.addEventListener("DOMContentLoaded", () => { 
-  console.log('Comandos disponíveis: showAll(), marcarTodas(), desmarcarTodas()');
-  performSearch(query);
-});
-window.showAll = () => document.getElementById('showAllButton')?.click();
 
 
-// Pega o valor da query de pesquisa e dos filtros
-const initialQuery = urlParams.get('query');  // Pesquisa que o usuário fez
-const initialFilters = urlParams.get('filters');  // Filtros selecionados (como DODI, FITGIRL, etc.)
+
+const initialQuery = urlParams.get('query');  
+const initialFilters = urlParams.get('filters');  
 
 
-// Variável para armazenar os filtros selecionados (usaremos os nomes em minúsculas)
 let selectedFilters = [];
 
-// Lista de fontes carregadas do JSON
+
 let sourcesList = [];
 
-// 1. Carregar as fontes do arquivo JSON
+
 fetch('../public/source/sources.json')
   .then(response => response.json())
   .then(data => {
@@ -35,7 +26,7 @@ fetch('../public/source/sources.json')
   })
   .catch(error => console.error('Erro ao carregar as fontes:', error));
 
-// Função para criar os checkboxes de filtros a partir do JSON
+
 function buildFilterOptions() {
   sourcesList.forEach(source => {
     const label = document.createElement('label');
@@ -43,28 +34,20 @@ function buildFilterOptions() {
 
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
-    // Usamos o nome da fonte (em minúsculas) como identificador
     checkbox.value = source.name.toLowerCase();
-    checkbox.checked = true; // Seleciona por padrão
+    checkbox.checked = true; 
     selectedFilters.push(checkbox.value);
 
-    ////////////////////////////////////////// mudar //////////////////////////////////////////////
-    // Atualiza a lista de filtros sem executar a busca imediatamente
     checkbox.addEventListener('change', (e) => {
-        const filterValue = e.target.value;
-        if (e.target.checked) {
-            if (!selectedFilters.includes(filterValue)) {
-                selectedFilters.push(filterValue);
-            }
-        } else {
-            selectedFilters = selectedFilters.filter(f => f !== filterValue);
+      const filterValue = e.target.value;
+      if (e.target.checked) {
+        if (!selectedFilters.includes(filterValue)) {
+          selectedFilters.push(filterValue);
         }
+      } else {
+        selectedFilters = selectedFilters.filter(f => f !== filterValue);
+      }
     });
-
-    // Executa a pesquisa apenas quando o botão de aplicar for clicado
-    
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////
 
     label.prepend(checkbox);
     filterOptions.appendChild(label);
@@ -73,19 +56,18 @@ function buildFilterOptions() {
 }
 
 function teste() {
-    const searchQuery = titleInput.value.trim(); // Remove espaços extras
-    if (!searchQuery) {
-        
-        console.log("input vazio"); // Mostra alerta se estiver vazio
-        return; // Sai sem executar a busca
-    }
-    performSearch(titleInput.value.trim()); // Executa a busca com os filtros aplicados
-};
+  const searchQuery = titleInput.value.trim(); 
+  if (!searchQuery) {
+    console.log("input vazio"); 
+    return; 
+  }
+  performSearch(titleInput.value.trim()); 
+}
 
-// Elemento começa invisível por padrão
+
 filterOptions.classList.remove('visible');
 
-// Toggle dos filtros ao clicar no botão
+
 filterButton.addEventListener('click', () => {
   const isVisible = filterOptions.classList.toggle('visible');
 });
@@ -95,48 +77,39 @@ document.addEventListener('click', (event) => {
     filterOptions.classList.remove('visible');
   }
 });
-// 3. Inicia a busca ao pressionar a tecla Enter
-titleInput.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') {
-    performSearch(titleInput.value.trim());
-    showMoreButton.style.display = 'none';
-  }
-});
+
+  titleInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' && titleInput.value.trim () !== "") {
+      performSearch(titleInput.value.trim());
+    }else{
+      console.log(" meu cu ta coçano")
+    }
+  });
+ 
 
 
-// Função que realiza a pesquisa
 function performSearch(searchQuery) {
-  resultContainer.innerHTML = ""; // Limpa os resultados anteriores
+  resultContainer.innerHTML = ""; 
   resultsCount.textContent = "0";
-  document.getElementById('showMoreButton').style.display = 'none';
 
-  // Verifica se a pesquisa está vazia
   if (!searchQuery) {
-    // Exibe a mensagem personalizada somente quando a pesquisa estiver vazia
     console.log("Pesquisa vazia");
     return;
   }
 
-  // Atualiza a URL com a pesquisa
   const newUrl = window.location.pathname + "?query=" + encodeURIComponent(searchQuery);
   window.history.pushState({ path: newUrl }, '', newUrl);
 
-  // Chama a função de pesquisa real (que vai buscar e exibir os resultados)
   searchGames(searchQuery);
 }
 
-// Função que lida com a alteração de filtros
 function handleFilterChange() {
-  // Só faz a pesquisa se houver texto no campo
   const searchQuery = titleInput.value.trim();
   if (searchQuery) {
     performSearch(searchQuery);
   }
 }
 
-
-
-// 5. Função que realiza a pesquisa em cada fonte selecionada
 function searchGames(query) {
   resultContainer.innerHTML = "";
   resultsCount.textContent = "0";
@@ -166,7 +139,7 @@ function searchGames(query) {
             resultContainer.innerHTML = "<p>Nenhum resultado encontrado.</p>";
             resultsCount.textContent = "0";
           } else {
-            displayResults(sortResultsByDate(allResults), 33); // Pass the limit here
+            displayResults(sortResultsByDate(allResults), 33);
           }
         }
       })
@@ -175,82 +148,81 @@ function searchGames(query) {
 }
 
 function sortResultsByDate(results) {
-  return results.sort((a, b) => new Date(b.uploadDate).getTime() - new Date(a.uploadDate).getTime()); // Comparação direta usando timestamps
+  return results.sort((a, b) => new Date(b.uploadDate).getTime() - new Date(a.uploadDate).getTime());
 }
 
 let currentResults = [];
-let currentLimit = 33;
+let currentLimit = 21; 
+const resultsIncrement = 15; 
 
-
-// 6. Função para exibir os resultados (cada resultado em um parágrafo ou card)
-function displayResults(results, limit = 21) {
+function displayResults(results, limit = 100) {
   currentResults = results;
-  currentLimit = limit;
+  currentLimit = Math.min(limit, currentResults.length);
   resultContainer.innerHTML = "";
   resultsCount.textContent = results.length;
-  console.log(results.length);  
-  
-  
-  
+
+  const initialResults = currentResults.slice(0, currentLimit);
+  initialResults.forEach(result => {
+    const resultCard = createResultCard(result);
+    resultContainer.appendChild(resultCard);
+  });
+}
 
 
-  const limitedResults = results.slice(0, limit);
-
-  limitedResults.forEach(result => {
-    const resultCard = document.createElement('div');
-    resultCard.classList.add('resultCard');
-    resultCard.innerHTML = `
+function createResultCard(result) {
+  const resultCard = document.createElement('div');
+  resultCard.classList.add('resultCard');
+  resultCard.innerHTML = `
     <div class="source-card">
       <p id="source">${result.repoName}</p>
-      <p id="Data"> ${new Date(result.uploadDate).toLocaleDateString()}</p>
+      <p id="Data">${new Date(result.uploadDate).toLocaleDateString()}</p>
     </div>
     <div class="title">
       <p id="title">${result.title}</p>
-      </div>
-      <p id="size"><b> Tamanho:&nbsp; </b> ${result.fileSize}</p>
-      
-    <div class="bottom-card">
-      <button class="openTorrentButton" onclick="openMagnetLink('${result.uris[0]}')"><i class="fas fa-download"></i> instalar</button>
-      <button id="copyButton" class="copyButton" onclick="copyToClipboard('${result.uris[0]}')">
-    <i class="fas fa-copy"></i> <span id="buttonText">Copiar</span>
-  </button> 
     </div>
-      `;
-    resultContainer.appendChild(resultCard);
-  });
-
-  ///////////////////////////////////"Mostrar mais" e "Mostrar todos"
-  const showMoreButton = document.getElementById('showMoreButton');
-  const showAllButton = document.getElementById('showAllButton');
-  if (results.length > limit) {
-    setTimeout(() => {
-    showMoreButton.style.display = 'block';
-    showAllButton.style.display = 'block';
-    }, 1);
-  } else {
-    showMoreButton.style.display = 'none';
-    showAllButton.style.display = 'none';
-  }
-
-  const updatedValorElement = document.getElementById('valor');
-  if (updatedValorElement) {
-    updatedValorElement.textContent = results.length;
-  }
+    <p id="size"><b>Tamanho:&nbsp;</b>${result.fileSize}</p>
+    <div class="bottom-card">
+      <button class="openTorrentButton" onclick="openMagnetLink('${result.uris[0]}')">
+        <i class="fas fa-download"></i> instalar
+      </button>
+      <button id="copyButton" class="copyButton" onclick="copyToClipboard('${result.uris[0]}')">
+        <i class="fas fa-copy"></i> <span id="buttonText">Copiar</span>
+      </button>
+    </div>
+  `;
+  return resultCard;
 }
 
-document.getElementById('showMoreButton').addEventListener('click', () => {
-  currentLimit += 33; // Incrementa o limite
-  displayResults(currentResults, currentLimit); // Exibe mais resultados
-});
+
+function loadMoreResults() {
+  const loading = document.getElementById('loading');
+  loading.style.display = 'flex';
+
+  setTimeout(() => {
+    if (currentLimit < currentResults.length) {
+      const nextLimit = Math.min(currentLimit + resultsIncrement, currentResults.length);
+      const additionalResults = currentResults.slice(currentLimit, nextLimit);
+      additionalResults.forEach(result => {
+        const resultCard = createResultCard(result);
+        resultContainer.appendChild(resultCard);
+      });
+      currentLimit = nextLimit;
+    }
+    loading.style.display = 'none';
+  }, 1500);
+}
+
+// Função para carregar mais resultados ao rolar a página
+  window.addEventListener('scroll', () => {
+    if(window.scrollY + window.innerHeight >= document.documentElement.scrollHeight && currentLimit < currentResults.length) {
+      loadMoreResults();
+    }
+  });
+
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Atualiza as checkboxes com base nos filtros da URL
   updateFilterCheckboxes();
 
-  // Oculta o botão "Mostrar mais" ao carregar a página
-  document.getElementById('showMoreButton').style.display = 'none';
-
-  // Realiza a pesquisa com o termo que está na URL, caso exista
   const urlParams = new URLSearchParams(window.location.search);
   const query = urlParams.get('query');
   if (initialQuery) {
@@ -258,157 +230,34 @@ document.addEventListener('DOMContentLoaded', () => {
     performSearch(query);
   }
 });
-
-document.getElementById('showAllButton').addEventListener('click', () => {
-  // Cria o container do aviso com o timer circular responsivo
-  if (currentResults.length > 1000) {
-    const aviso = document.createElement('div');
-    aviso.classList.add('aviso');
-    aviso.innerHTML = `
-      <div class="bg-aviso">
-        <div class="aviso-content"> 
-          <div class="timer-container" style="width: 15vmin; height: 15vmin;">
-            <svg viewBox="0 0 200 200" style="transform: rotate(-90deg); width: 100%; height: 100%;">
-              <!-- Círculo de fundo branco -->
-              <circle id="progress" cx="100" cy="100" r="70" stroke="white" stroke-width="30" fill="none"/>
-              <!-- Círculo de progresso verde -->
-              <circle id="progressCircle" cx="100" cy="100" r="70" stroke="green" stroke-width="29" fill="none"
-                stroke-dasharray="439.82" stroke-dashoffset="439.82" />
-            </svg>
-            <!-- Texto central com o tempo restante -->
-            <div class="time-text" id="timeText">5</div>
-          </div>
-          <div class="aviso-text">
-            <h1>AÇÃO NÃO RECOMENDADA!</h1>
-          </div>
-        </div>
-
-        <div class="aviso-text-2">
-          <p>Carregar milhares de resultados simultaneamente
-           pode causar travamentos, queda de desempenho ou falhas no sistema.
-          </p>
-          <p>Deseja <b>realmente</b> continuar?</p>
-        </div>
-
-        <div class="aviso-buttons">
-          <button class="aviso-button" id="cancelButton">Cancelar</button>
-          <button class="aviso-button" class = "confirmButton" id="confirmButton">Continuar</button>
-      </div>
-    `;
-    document.body.appendChild(aviso);
-
-    document.getElementById('cancelButton').addEventListener('click', () => {
-      document.body.removeChild(aviso);
-    });
-
-    document.getElementById('confirmButton').addEventListener('click', () => {
-      displayResults(currentResults, currentResults.length);
-      document.body.removeChild(aviso);
-    }); 
-
-    // Seleciona os elementos do SVG e do texto
-    const progressCircle = aviso.querySelector('#progressCircle');
-    const timeText = aviso.querySelector('#timeText');
-
-    const radius = 70; // Raio ajustado para o círculo menor
-    const circumference = 2 * Math.PI * radius; // Circunferência ajustada
-
-    const totalTime = 5; // Tempo total em segundos
-    const startTime = Date.now();
-    let timerInterval = setInterval(() => {
-      const elapsed = (Date.now() - startTime) / 1000; // Tempo decorrido em segundos
-      let progress = elapsed / totalTime;
-      if (progress > 1) progress = 1; // Garante que o progresso não ultrapasse 100%
-
-      // Atualiza o deslocamento do círculo para representar o progresso
-      const offset = circumference * (1 - progress);
-      progressCircle.style.strokeDashoffset = offset;
-
-      // Atualiza o tempo exibido (arredondado para cima)
-      let timeLeft = Math.ceil(totalTime - elapsed);
-      if (timeLeft < 0) timeLeft = 0;
-      timeText.textContent = timeLeft;
-
-      // Quando o timer atinge 0 (100% do progresso)
-      if (progress === 1) {
-        progressCircle.style.strokeDashoffset = 0;
-        progressCircle.style.fill = 'green';
-        progressCircle.style.transition = 'fill 0.1s ease-in';
-        document.getElementById('progress').style.display = 'none';
-      
-        timeText.style.fontSize = '5.5vmin';
-        timeText.innerHTML = ' <i class="fa-solid fa-check"></i>';
-        clearInterval(timerInterval);
-        // ativa e desativo o botão
-        
-        document.getElementById('confirmButton').style.pointerEvents = 'auto';
-      } else {
-        document.getElementById('confirmButton').style.pointerEvents = 'none';
-      }
-
-    }, 1000 / 60); // Atualiza cerca de 60 vezes por segundo
-  } else {
-    displayResults(currentResults, currentResults.length);
-  }
-});
-
-
-
-
-
-
-document.addEventListener('DOMContentLoaded', () => {
-  // Atualiza as checkboxes com base nos filtros da URL
-  updateFilterCheckboxes();
-
-  // Oculta os botões "Mostrar mais" e "Mostrar todos" ao carregar a página
-  document.getElementById('showMoreButton').style.display = 'none';
-  document.getElementById('showAllButton').style.display = 'none';
-
-  // Realiza a pesquisa com o termo que está na URL, caso exista
-  const urlParams = new URLSearchParams(window.location.search);
-  const query = urlParams.get('query');
-  if (initialQuery) {
-    titleInput.value = decodeURIComponent(initialQuery);
-    performSearch(query);
-  }
-});
-
-///////////////////////////////////////////////////////////////////////////////////////////////
 
 // Função para abrir o link magnet
 function openMagnetLink(magnetLink) {
   window.location.href = magnetLink;
 }
+
 // Função para copiar o link magnet
 function copyToClipboard(text) {
   const textarea = document.createElement('textarea');
-  
   textarea.value = text;
   document.body.appendChild(textarea);
   textarea.select();
   document.execCommand('copy');
   document.body.removeChild(textarea);
 
-  // Cria uma nova notificação
   const notification = document.createElement('div');
   notification.classList.add('copy-notification');
   notification.textContent = 'Link copiado!';
 
-  // Adiciona a notificação no container
   const container = document.getElementById('notificationContainer');
   container.appendChild(notification);
 
-  // Força reflow para que a transição funcione
   void notification.offsetWidth;
 
-  // mostra a notificação
   notification.classList.add('show');
 
-  // Remove a notificação dps de 2 segundos
   setTimeout(() => {
     notification.classList.remove('show');
-    // Após a transição de saída (0.5s), remove o elemento do DOM
     setTimeout(() => {
       if (container.contains(notification)) {
         container.removeChild(notification);
@@ -419,35 +268,30 @@ function copyToClipboard(text) {
 
 // Função para marcar ou desmarcar todas as checkboxes
 function marcarTodas() {
-  // Marca todas as checkboxes
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
   checkboxes.forEach(checkbox => {
     checkbox.checked = true;
   });
   console.log("marcadas");
 
-  // Atualiza o selectedFilters para incluir todas as opções
   selectedFilters = Array.from(checkboxes).map(checkbox => checkbox.value);
-
 }
+
 function desmarcarTodas() {
-  // Desmarca todas as checkboxes
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
   checkboxes.forEach(checkbox => {
     checkbox.checked = false;
   });
   console.log("desmarcadas");
 
-  // Limpa o selectedFilters
   selectedFilters = [];
 }
-///////////////////////////////////////////////////////////////////////////////////////////////
 
 // Carregar os filtros da URL (caso existam)
 function getFiltersFromUrl() {
   const urlParams = new URLSearchParams(window.location.search);
   let filtersFromUrl = urlParams.get('filters');
-  return filtersFromUrl ? filtersFromUrl.split(',') : []; // Converte os filtros de string para um array
+  return filtersFromUrl ? filtersFromUrl.split(',') : [];
 }
 
 // Salvar os filtros na URL
@@ -469,58 +313,23 @@ function updateFilterCheckboxes() {
     }
   });
 
-  // Atualiza a lista de filtros selecionados conforme as checkboxes
   selectedFilters = filtersFromUrl.length > 0 ? filtersFromUrl : sourcesList.map(source => source.name.toLowerCase());
 }
 
-// Função que realiza a pesquisa (igual à original)
-function performSearch(searchQuery) {
-  resultContainer.innerHTML = "";
-  resultsCount.textContent = "0";
-
-  // Verifica se a pesquisa está vazia
-  if (!searchQuery) {
-    resultContainer.innerHTML = "<p>Hello, World!</p>";
-    console.log("input vazio");
-    return;
-  }
-
-  const newUrl = window.location.pathname + "?query=" + encodeURIComponent(searchQuery);
-  window.history.pushState({ path: newUrl }, '', newUrl);
-
-  searchGames(searchQuery);
-}
-
-// Ao carregar a página, verificamos os filtros e realizamos a pesquisa
-document.addEventListener('DOMContentLoaded', () => {
-  // Atualiza as checkboxes com base nos filtros da URL
-  updateFilterCheckboxes();
-
-  // Realiza a pesquisa com o termo que está na URL, caso exista
-  const urlParams = new URLSearchParams(window.location.search);
-  const query = urlParams.get('query');
-  if (initialQuery) {
-    titleInput.value = decodeURIComponent(initialQuery);
-    performSearch(query);
-  }
-});
-
 // Se a string de filtros estiver presente, processa ela
 if (initialFilters) {
-  selectedFilters = initialFilters.split(',');  // Divide a string de filtros em um array
-  applyFiltersToUI();  // Aplica os filtros no DOM (ex.: marca as checkboxes)
+  selectedFilters = initialFilters.split(',');
+  applyFiltersToUI();
 }
 
 // Função para aplicar os filtros ao DOM
 function applyFiltersToUI() {
-  const checkboxes = document.querySelectorAll('input[type="checkbox"]');  // Pega todas as checkboxes
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
   checkboxes.forEach(checkbox => {
-    // Marca as checkboxes cujos valores estão nos filtros selecionados
     checkbox.checked = selectedFilters.includes(checkbox.value);
   });
 
-  // Após aplicar os filtros, realiza a pesquisa novamente
   performSearch(titleInput.value.trim());
 }
 
