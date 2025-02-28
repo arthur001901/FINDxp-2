@@ -78,15 +78,19 @@ document.addEventListener('click', (event) => {
   }
 });
 
-  titleInput.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter' && titleInput.value.trim () !== "") {
-      performSearch(titleInput.value.trim());
-    }else{
-      console.log(" meu cu ta coçano")
-    }
-  });
- 
+titleInput.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter' && titleInput.value.trim () !== "") {
+    performSearch(titleInput.value.trim());
+  }
+});
 
+
+  document.addEventListener('DOMContentLoaded', (event) => {
+    setTimeout(() => {
+      performSearch(titleInput.value.trim())
+      console.log("Pesquisa - DOMContentLoaded")
+    },1000 );
+  });
 
 function performSearch(searchQuery) {
   resultContainer.innerHTML = ""; 
@@ -198,18 +202,28 @@ function loadMoreResults() {
   const loading = document.getElementById('loading');
   loading.style.display = 'flex';
 
-  setTimeout(() => {
-    if (currentLimit < currentResults.length) {
-      const nextLimit = Math.min(currentLimit + resultsIncrement, currentResults.length);
-      const additionalResults = currentResults.slice(currentLimit, nextLimit);
-      additionalResults.forEach(result => {
-        const resultCard = createResultCard(result);
-        resultContainer.appendChild(resultCard);
-      });
-      currentLimit = nextLimit;
-    }
-    loading.style.display = 'none';
-  }, 1500);
+  function executarComDelay() {
+    let min = 750; // Tempo mínimo (2 segundos)
+    let max = 2000; // Tempo máximo (5 segundos)
+
+    let delay = Math.random() * (max - min) + min;
+
+    setTimeout(() => {
+      if (currentLimit < currentResults.length) {
+        const nextLimit = Math.min(currentLimit + resultsIncrement, currentResults.length);
+        const additionalResults = currentResults.slice(currentLimit, nextLimit);
+        additionalResults.forEach(result => {
+          const resultCard = createResultCard(result);
+          resultContainer.appendChild(resultCard);
+        });
+        currentLimit = nextLimit;
+      }
+      loading.style.display = 'none';
+      resultContainer.style.marginBottom = 0;
+    }, delay);
+  }
+
+  executarComDelay();
 }
 
 // Função para carregar mais resultados ao rolar a página
@@ -333,3 +347,6 @@ function applyFiltersToUI() {
   performSearch(titleInput.value.trim());
 }
 
+function clearInput() {
+  titleInput.value="";
+}

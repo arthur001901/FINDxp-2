@@ -14,22 +14,26 @@
 
 <header class="search-header">
   <div class="search">
+
+
     <input spellcheck="false" type="text" id="titleInput" placeholder="Pesquisar" autocomplete="off">
+    <button id="clear" onClick="clearInput()">X</button>
+    
+
     <div class="dropdown">
       <button id="filterButton">
         <i class="fas fa-filter"></i>
       </button>
       <div id="filterOptions" class="dropdown-content">
-          <div class="filter2"> 
-            <button id="marcar" onclick="marcarTodas()">Selecionar Tudo</button>
-          </div>
-          <div class="filter3"> 
-            <button id="desmarcar" onclick="desmarcarTodas()">Limpar Seleção</button>
-          </div>
-          <div class="apply">
-            <button id="applyButton" onclick="teste()">Aplicar</button>
-            </div>
+        <div class="filter2"> 
+          <button id="marcar" onclick="marcarTodas()">Selecionar Tudo</button>
         </div>
+        <div class="filter3"> 
+          <button id="desmarcar" onclick="desmarcarTodas()">Limpar Seleção</button>
+        </div>
+        <div class="apply">
+          <button id="applyButton" onclick="teste()">Aplicar</button>
+        </div>  
       </div>
     </div>
   </div>

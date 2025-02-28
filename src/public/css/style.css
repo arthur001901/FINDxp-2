@@ -13,11 +13,6 @@ body {
     animation: gradientMove 100s infinite alternate ease-in-out;
 }
 
-
-
-
-
-
 @keyframes gradientMove {
     0% {
         background-size: 100%;
@@ -36,14 +31,11 @@ body {
 }
  
 ::-webkit-scrollbar-track {
-    background: #0e0f12e0;
-    border-radius: 100vw;
-    
+    background: #0e0f12e0; 
 }
 
 ::-webkit-scrollbar-thumb {
     background-color: #0a0a0a;
-    
     transition: all 10s ease-out;
     cursor: pointer;
 }
@@ -154,14 +146,14 @@ body {
 
 
 .search-header {
-    background-color: rgba(14, 13, 13, 0.329);
+    background-color: rgba(14, 13, 13, 0.529);
     display: flex;
     position: fixed;
     justify-content: center;
     align-items: center;
     top: 0;
     left: 0;
-    max-width: 100%;
+    width: 100vw;
     height: 100px;
     z-index: 1000;
     backdrop-filter: blur(10px);
@@ -174,9 +166,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* background-color: #00f014; */
-    width: 2000px;
-    height: 55px;
+    background-color: #00f014;
+    
+    width: 40vw;
+    height: 45px;
     
 }
 
@@ -193,18 +186,16 @@ input#titleInput {
     align-items: center;
     box-sizing: border-box;
     padding-left: 20px;
-    padding-bottom: 5px;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: 0.05em;
-    text-transform: capitalize;
     border-radius: 40px 0px 0px 40px; /* Ajuste o valor para o grau de arredondamento desejado */
     border: 1px solid #424242;
     background-color: #0e0f1275;
     color: #bbbbbb;
     outline: none;
-    font-size: 20px;
-    width: 80%;
-    max-width: 800px;
+    font-size: 22px;
+    width: 100%;
+  
     height: 100%;
     transition: all 0.2s ease-in-out;
 }
@@ -213,6 +204,7 @@ input#titleInput:hover {
     color: #f1f1f1;
     border: 1.5px solid #f1f1f1;
 }
+
 
 button#filterButton {
     height: 100%;
@@ -445,16 +437,7 @@ button#filterButton:hover {
     .resultCard {
         flex: 1 1 calc(23% - 20px); /* 4 cards por linha */
     }
-    input#titleInput {
-        font-size: 18px;
-    }
-    button#filterButton {
-        width: 50px;
-        padding-left: 5%;
-    }
-    .dropdown-content {
-        scale: 0.8;
-    }
+    
 }
 
 @media (max-width: 1000px) and (min-width: 900px) {
@@ -471,22 +454,12 @@ button#filterButton:hover {
    
 }
 
-@media (max-width: 900px) and (min-width: 600px) {
+@media (max-width: 900px) and (min-width: 400px) {
     .openTorrentButton {
         width: 70%
     }
-    #Data {
-        display: none;
-    }
-    input#titleInput {
-        font-size: 18px;
-    }
-    button#filterButton {
-        width: 50px;
-        padding-left: 5%;
-    }
     .resultCard {
-        flex: 1 1 calc(50% - 20px); /* 2 cards por linha */
+        flex: 1 1 calc(30% - 20px); /* 3 cards por linha */
     }
 }
 
@@ -571,9 +544,11 @@ input[type="checkbox"]:checked:hover{
   #loadingSpinner {
     /* background-color: #00BF62; */
     width: 100%;
-    height: 100px;
+    height: 80px;
+    display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 20px;
   }
 
   .loader {
