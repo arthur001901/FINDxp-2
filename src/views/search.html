@@ -1,81 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botão Voltar ao Topo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            height: 2000px; /* Apenas para demonstrar a rolagem */
+            padding: 20px;
+        }
 
-body {
-  background: radial-gradient(circle at left bottom, #030616, #1a1a22);
-  overflow: hidden;
-  margin: 0;
-  height: 100vh;
-}
+        #btnTopo {
+            display: none; /* Inicialmente escondido */
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
 
-.balls-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-}
-
-.ball {
-  position: absolute;
-  width: 150px;
-  height: 150px;
-  background: #03061673;
-  border-radius: 50%;
-  filter: blur(20px);
-  animation: floatBalls 10s infinite alternate ease-in-out;
-}
-
-.ball:nth-child(1) {
-  top: 10%;
-  left: 10%;
-  width: 200px;
-  height: 200px;
-  background: #03061654;
-  animation-duration: 12s;
-}
-
-.ball:nth-child(2) {
-  top: 50%;
-  left: 20%;
-  width: 180px;
-  height: 180px;
-  background: #0306163a;
-  animation-duration: 15s;
-}
-
-.ball:nth-child(3) {
-  top: 30%;
-  left: 70%;
-  width: 250px;
-  height: 250px;
-  background: #03061642;
-  animation-duration: 18s;
-}
-
-@keyframes floatBalls {
-  0% {
-    transform: translateY(0) translateX(0);
-  }
-  100% {
-    transform: translateY(-100px) translateX(50px);
-  }
-}
-
-
-  </style>
+        #btnTopo:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-  <div class="balls-container">
-    <div class="ball"></div>
-    <div class="ball"></div>
-    <div class="ball"></div>
-  </div>  
+
+    <h1>Role para baixo e veja o botão aparecer</h1>
+
+    <button id="btnTopo" onclick="voltarAoTopo()">▲</button>
+
+    <script>
+        let btnTopo = document.getElementById("btnTopo");
+
+        window.onscroll = function() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                btnTopo.style.display = "block";
+            } else {
+                btnTopo.style.display = "none";
+            }
+        };
+
+        function voltarAoTopo() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
 </body>
 </html>

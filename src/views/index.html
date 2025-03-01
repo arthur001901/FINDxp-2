@@ -12,13 +12,13 @@
 
 <body>
 
-<header class="search-header">
+<header class="search-header" id="search-Header">
   <div class="search">
-
-
-    <input spellcheck="false" type="text" id="titleInput" placeholder="Pesquisar" autocomplete="off">
-    <button id="clear" onClick="clearInput()">X</button>
     
+    <div class="searchBar" id="searchBar"> 
+      <input spellcheck="false" type="text" id="titleInput" placeholder="Pesquisar" autocomplete="off">
+      <div id="clear" onClick="clearInput()"><i class="fa-solid fa-xmark"></i></div>
+    </div>
 
     <div class="dropdown">
       <button id="filterButton">
@@ -48,6 +48,8 @@
 <div class="results-wrapper"> 
   <div id="resultContainer"></div>
 </div>
+
+<a href="#"><p style="right: 2%; bottom: 1%;" class="scrollToTop"><i class="fa-solid fa-chevron-up"></i></p></a>
 
 
 <div id="loading" style="display:none">

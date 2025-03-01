@@ -349,4 +349,26 @@ function applyFiltersToUI() {
 
 function clearInput() {
   titleInput.value="";
+  input.focus();
+}
+const searchBar = document.getElementById("searchBar")
+const input = document.getElementById("titleInput");
+
+input.addEventListener("focusin", function(event) {
+  console.log("foco em titleInput");
+  searchBar.classList.add("focus-sB")
+})
+
+input.addEventListener("blur", function(event) {
+  console.log("foco em titleInput");
+  searchBar.classList.remove("focus-sB")
+})
+
+window.addEventListener("scroll", function(){
+  let btnBTP = document.querySelector('#btnBTP')
+  Headers.classList.toggle('sholavel', this.window.scrollY > 0)
+})
+
+function voltarAoTopo() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }

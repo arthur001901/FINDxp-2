@@ -1,7 +1,12 @@
+/*css geral, não tenho certeza se vou usar isso, mas se for, vai ser pra coisas como html, body , etc*/
 @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+html {
+    scroll-behavior: smooth;
+}
 
 body {
-    background: linear-gradient(to left bottom, #000327fd, #121229);
+    background: linear-gradient(to left bottom, #000204, #0a0d13, #101418);
+
     background-attachment: fixed;
     background-size: 100%;
     font-family: 'Poppins';
@@ -154,7 +159,7 @@ body {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100px;
+    height: 70px;
     z-index: 1000;
     backdrop-filter: blur(10px);
     border-bottom: 1px solid #424242;
@@ -166,15 +171,45 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #00f014;
-    
-    width: 40vw;
+    background-color: #0e0f1275;
+    border: 1px solid #424242;
+    border-radius: 40px;
+    width: 56vw;
+    max-width: 600px;
     height: 45px;
-    
 }
 
+#clear {
+    width: 49px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-size: 22px;
+    cursor: pointer;
+
+}
+
+.searchBar {
+    display: flex;
+    
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 45px;
+    border-radius: 40px 0px 0px 40px;
+}
+
+.focus-sB{  
+    border: 1px solid #4d90fe;
+
+}
+
+
+
 #titleInput::placeholder {
-    color: #A99F93;
+    color: #f1f1f1;
 }
 
 #seta-filtro {
@@ -188,23 +223,16 @@ input#titleInput {
     padding-left: 20px;
     font-weight: 700;
     letter-spacing: 0.05em;
-    border-radius: 40px 0px 0px 40px; /* Ajuste o valor para o grau de arredondamento desejado */
-    border: 1px solid #424242;
-    background-color: #0e0f1275;
-    color: #bbbbbb;
+    border-radius: 40px 0px 0px 40px; /* Ajuste o valor para o grau de arredondamento desejado */  
+    background: none;
+    border: none;
+    color: #f1f1f1;
     outline: none;
     font-size: 22px;
     width: 100%;
-  
     height: 100%;
     transition: all 0.2s ease-in-out;
 }
-
-input#titleInput:hover {
-    color: #f1f1f1;
-    border: 1.5px solid #f1f1f1;
-}
-
 
 button#filterButton {
     height: 100%;
@@ -214,7 +242,10 @@ button#filterButton {
     padding-left: 15%;
     color: #bbbbbb;
     background-color: #0f0f0f;
-    border: 1px solid #424242;
+    border-right: none;
+    border-left: 1px solid #424242;
+    border-bottom: none;
+    border-top: none;
     outline: none;
     border-radius: 0px 40px 40px 0px;
     width: 70px;
@@ -228,11 +259,10 @@ button#filterButton {
 
 button#filterButton:hover {
     color: #f1f1f1;
-    border: 1.5px solid #f1f1f1;
 }
 
 .resultCountContainer {
-    margin-top: 50px;
+    margin-top: 10px;
     /* background-color: #00BF62; */
     width: 100%;
     
@@ -275,16 +305,14 @@ button#filterButton:hover {
     width: 100%;
     box-sizing: border-box;
     margin-bottom: 10px;
-    
-    
 }
 
 .source-card {
     /* background-color: #00f01479; */
     display: flex;
-    gap: 2px;
+    gap: 1px;
     line-height: 1;
-    padding: 7px;
+    padding: 3px;
     border-radius: 10px 10px 0px 0px;
 }
 
@@ -293,7 +321,7 @@ button#filterButton:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 18px;
+    font-size: 16px;
     border-radius: 5px;
     border: 1px solid #424242;
     font-weight: 200;
@@ -349,12 +377,12 @@ button#filterButton:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 18px;
+    font-size: 16px;
     border-radius: 5px;
     border: 1px solid #424242;
     font-weight: 200;
     max-width: max-content;
-    padding: 2px;
+    padding: 4px;
     margin: 2px;
 }
 
@@ -395,7 +423,7 @@ button#filterButton:hover {
 }
 
 .resultCard {
-    background-color:#0e0f1275;
+    background-color:rgba(29, 33, 43, 0.259);
     width: 100%;
     /* padding-left: 10px;
     padding-right: 10px; */
@@ -515,10 +543,10 @@ input[type="checkbox"]:checked:hover{
     height: 70px; /* altura da área de notificação */
     pointer-events: none; /* para que cliques passem por ele, se necessário */
     z-index: 1000;  
-  }
-  
-  /* Cada notificação ocupa o mesmo espaço dentro do container */
-  .copy-notification {
+}
+
+    /* Cada notificação ocupa o mesmo espaço dentro do container */
+.copy-notification {
     position: absolute;
     top: 0;
     left: 0;
@@ -533,15 +561,15 @@ input[type="checkbox"]:checked:hover{
     opacity: 0;
     transform: translateY(100%); /* inicia fora da área (para baixo) */
     transition: transform 0.55s ease, opacity 0.5s ease;
-  }
-  
-  /* Estado visível: a notificação sobe para ocupar o espaço */
-  .copy-notification.show {
+}
+
+    /* Estado visível: a notificação sobe para ocupar o espaço */
+.copy-notification.show {
     opacity: 1;
     transform: translateY(40%);
-  }
+}
 
-  #loadingSpinner {
+#loadingSpinner {
     /* background-color: #00BF62; */
     width: 100%;
     height: 80px;
@@ -549,9 +577,9 @@ input[type="checkbox"]:checked:hover{
     justify-content: center;
     align-items: center;
     margin-bottom: 20px;
-  }
+}
 
-  .loader {
+.loader {
     width: 48px;
     height: 48px;
     border: 5px solid #ffffff00;
@@ -560,13 +588,45 @@ input[type="checkbox"]:checked:hover{
     display: inline-block;
     box-sizing: border-box;
     animation: rotation 1s linear infinite;
-    }
+}
 
-    @keyframes rotation {
+@keyframes rotation {
     0% {
         transform: rotate(0deg);
     }
     100% {
         transform: rotate(360deg);
     }
-    } 
+} 
+
+.scrollToTop {
+    background-color: #333;
+    justify-content: center;
+    align-items: center;
+    width: 5vmin;
+    height: 5vmin;
+    font-size: 3vmin;
+    color: #f1f1f1;
+    border-radius: 5vmin;
+    opacity: 0;
+    animation-name: appear;
+    animation-timeline: scroll(y);
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+        display: none;
+        position: fixed;
+    }
+    1% {
+       opacity: 1;
+        display: flex;
+        position: fixed;
+    }
+    100% {
+        opacity: 1;
+        display: flex;
+        position: fixed;
+    }
+}
